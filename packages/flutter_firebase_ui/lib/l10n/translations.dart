@@ -43,7 +43,6 @@ class TranslationBundle {
   String get signInFacebook => parent?.signInFacebook;
   String get signInGoogle => parent?.signInGoogle;
   String get signInEmail => parent?.signInEmail;
-  String get signInTwitter => parent?.signInTwitter;
 
   String get errorOccurred => parent?.errorOccurred;
 
@@ -132,9 +131,6 @@ Connectez-vous avec $providerName pour continuer.''';
 
   @override
   String get signInEmail => r'Connexion avec email';
-
-  @override
-  String get signInTwitter => r'Connexion avec Twitter';
 }
 
 // ignore: camel_case_types
@@ -214,9 +210,6 @@ Sign in with $providerName to continue.''';
 
   @override
   String get signInEmail => r'Sign in with email';
-
-  @override
-  String get signInTwitter => r'Sign in with Twitter';
 }
 
 // ignore: camel_case_types
@@ -296,9 +289,6 @@ Mit $providerName anmelden um fortzufarhen.''';
 
   @override
   String get signInEmail => r'Mit Email anmelden';
-
-  @override
-  String get signInTwitter => r'Mit Twitter anmelden';
 }
 
 // ignore: camel_case_types
@@ -455,9 +445,6 @@ Entra con $providerName para continuar.''';
 
   @override
   String get signInEmail => r'Entrar con email';
-
-  @override
-  String get signInTwitter => r'Entrar con Twitter';
 }
 
 TranslationBundle translationBundleForLocale(Locale locale) {

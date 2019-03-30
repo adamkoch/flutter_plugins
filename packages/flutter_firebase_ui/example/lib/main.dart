@@ -79,8 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ProvidersTypes.twitter,
           ProvidersTypes.email
         ],
-        twitterConsumerKey: "",
-        twitterConsumerSecret: "",
       );
     } else {
       return new HomeScreen(user: _currentUser);
