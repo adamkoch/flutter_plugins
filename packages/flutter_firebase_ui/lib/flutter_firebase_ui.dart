@@ -1,10 +1,11 @@
 library flutter_firebase_ui;
 
-export 'utils.dart';
-
 import 'package:flutter/material.dart';
+
 import 'login_view.dart';
 import 'utils.dart';
+
+export 'utils.dart';
 
 class SignInScreen extends StatefulWidget {
   SignInScreen({
@@ -15,14 +16,18 @@ class SignInScreen extends StatefulWidget {
     this.signUpPasswordCheck,
     this.providers,
     this.color = Colors.white,
+    this.backgroundImage,
+    this.loading,
   }) : super(key: key);
 
   final String title;
   final Widget header;
   final Widget footer;
+  final Widget loading;
   final List<ProvidersTypes> providers;
   final Color color;
   final bool signUpPasswordCheck;
+  final ImageProvider backgroundImage;
 
   @override
   _SignInScreenState createState() => new _SignInScreenState();
@@ -39,26 +44,50 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) => new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.title),
-        elevation: 4.0,
-      ),
-      body: new Builder(
-        builder: (BuildContext context) {
-          return new Container(
-              padding: const EdgeInsets.all(16.0),
-              decoration: new BoxDecoration(color: widget.color),
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  _header,
-                  new Expanded(
-                      child: new LoginView(
+//        appBar: new AppBar(
+//          title: new Text(widget.title),
+//          elevation: 4.0,
+//        ),
+        body: new Builder(
+          builder: (BuildContext context) {
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                widget.backgroundImage == null
+                    ? null
+                    : Container(
+                        foregroundDecoration:
+                            BoxDecoration(color: Colors.black.withOpacity(0.6)),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: widget.backgroundImage,
+                            ),
+                          ),
+                        ),
+                      ),
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+//                  decoration: new BoxDecoration(color: widget.color),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      _header,
+                      Expanded(
+                        child: LoginView(
                           providers: _providers,
-                          passwordCheck: _passwordCheck,)),
-                  _footer
-                ],
-              ));
-        },
-      ));
+                          passwordCheck: _passwordCheck,
+                          loading: widget.loading,
+                        ),
+                      ),
+                      _footer
+                    ],
+                  ),
+                ),
+              ].where((w) => w != null).toList(),
+            );
+          },
+        ),
+      );
 }

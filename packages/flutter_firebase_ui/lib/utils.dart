@@ -94,7 +94,7 @@ Map<ProvidersTypes, ButtonDescription> providersDefinitions(
           logo: "go-logo.png",
           label: FFULocalizations.of(context).signInGoogle,
           name: "Google",
-          labelColor: Colors.grey),
+          labelColor: Colors.black.withOpacity(0.54)),
       ProvidersTypes.email: new ButtonDescription(
           color: const Color.fromRGBO(219, 68, 55, 1.0),
           logo: "email-logo.png",

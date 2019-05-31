@@ -12,6 +12,7 @@ class LoginView extends StatefulWidget {
   final bool passwordCheck;
   final String twitterConsumerKey;
   final String twitterConsumerSecret;
+  final Widget loading;
 
   LoginView({
     Key key,
@@ -19,6 +20,7 @@ class LoginView extends StatefulWidget {
     this.passwordCheck,
     this.twitterConsumerKey,
     this.twitterConsumerSecret,
+    this.loading,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class _LoginViewState extends State<LoginView> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Map<ProvidersTypes, ButtonDescription> _buttons;
+  bool loading = false;
 
   _handleEmailSignIn() async {
     String value = await Navigator.of(context)
@@ -42,6 +45,7 @@ class _LoginViewState extends State<LoginView> {
   }
 
   _handleGoogleSignIn() async {
+    startLoading();
     GoogleSignInAccount googleUser = await googleSignIn.signIn();
     if (googleUser != null) {
       GoogleSignInAuthentication googleAuth = await googleUser.authentication;
@@ -56,9 +60,11 @@ class _LoginViewState extends State<LoginView> {
         }
       }
     }
+    stopLoading();
   }
 
   _handleFacebookSignin() async {
+    startLoading();
     FacebookLoginResult result =
         await facebookLogin.logInWithReadPermissions(['email']);
     if (result.accessToken != null) {
@@ -71,6 +77,7 @@ class _LoginViewState extends State<LoginView> {
         showErrorDialog(context, e.details);
       }
     }
+    stopLoading();
   }
 
   @override
@@ -86,13 +93,22 @@ class _LoginViewState extends State<LoginView> {
           .copyWith(onSelected: _handleEmailSignIn),
     };
 
-    return new Container(
-        child: new ListView(
-            children: widget.providers.map((p) {
-      return new Container(
-          padding: const EdgeInsets.symmetric(vertical: 0.0),
-          child: _buttons[p] ?? new Container());
-    }).toList()));
+    return Container(
+      child: loading
+          ? widget.loading != null
+              ? widget.loading
+              : Align(
+                  child: CircularProgressIndicator(),
+                  alignment: Alignment.topCenter,
+                )
+          : ListView(
+              children: widget.providers.map((p) {
+                return Container(
+                    padding: const EdgeInsets.symmetric(vertical: 0.0),
+                    child: _buttons[p] ?? Container());
+              }).toList(),
+            ),
+    );
   }
 
   void _followProvider(String value) {
@@ -102,5 +118,17 @@ class _LoginViewState extends State<LoginView> {
     } else if (provider == ProvidersTypes.google) {
       _handleGoogleSignIn();
     }
+  }
+
+  void startLoading() {
+    setState(() {
+      loading = true;
+    });
+  }
+
+  void stopLoading() {
+    setState(() {
+      loading = false;
+    });
   }
 }
