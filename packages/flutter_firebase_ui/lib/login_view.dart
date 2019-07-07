@@ -74,7 +74,15 @@ class _LoginViewState extends State<LoginView> {
         FirebaseUser user = await _auth.signInWithCredential(credential);
         print(user);
       } catch (e) {
-        showErrorDialog(context, e.details);
+        if (e?.code == 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL') {
+          showErrorDialog(context,
+              'This account already exists but a different login method was used.\n\nPlease try logging in via the original login method.');
+        } else {
+          showErrorDialog(
+              context,
+              'Oops, something went wrong.\n\nError code: ' + e?.code ??
+                  e.toString());
+        }
       }
     }
     stopLoading();
