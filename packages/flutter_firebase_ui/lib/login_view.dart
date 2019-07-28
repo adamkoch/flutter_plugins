@@ -53,7 +53,8 @@ class _LoginViewState extends State<LoginView> {
         try {
           AuthCredential credential = GoogleAuthProvider.getCredential(
               idToken: googleAuth.idToken, accessToken: googleAuth.accessToken);
-          FirebaseUser user = await _auth.signInWithCredential(credential);
+          AuthResult result = await _auth.signInWithCredential(credential);
+          FirebaseUser user = result.user;
           print(user);
         } catch (e) {
           showErrorDialog(context, e.details);
@@ -71,7 +72,8 @@ class _LoginViewState extends State<LoginView> {
       try {
         AuthCredential credential = FacebookAuthProvider.getCredential(
             accessToken: result.accessToken.token);
-        FirebaseUser user = await _auth.signInWithCredential(credential);
+        AuthResult authResult = await _auth.signInWithCredential(credential);
+        FirebaseUser user = authResult.user;
         print(user);
       } catch (e) {
         if (e?.code == 'ERROR_ACCOUNT_EXISTS_WITH_DIFFERENT_CREDENTIAL') {
