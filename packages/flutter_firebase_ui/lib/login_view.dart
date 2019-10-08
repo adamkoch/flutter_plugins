@@ -66,8 +66,7 @@ class _LoginViewState extends State<LoginView> {
 
   _handleFacebookSignin() async {
     startLoading();
-    FacebookLoginResult result =
-        await facebookLogin.logInWithReadPermissions(['email']);
+    FacebookLoginResult result = await facebookLogin.logIn(['email']);
     if (result.accessToken != null) {
       try {
         AuthCredential credential = FacebookAuthProvider.getCredential(
